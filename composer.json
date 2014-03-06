@@ -1,0 +1,24 @@
+{
+    "name": "comnect/consoler",
+    "description": "php cli application package",
+    "minimum-stability": "alpha",
+    "license": "MIT",
+    "keywords": ["console", "php", "cli"],
+    "authors": [
+        {
+            "name": "yuuki.takezawa",
+            "email": "yuuki.takezawa@comnect.jp.net"
+        }
+    ],
+	"require": {
+		"php": ">=5.3.3",
+		"comnect/console": "dev-master",
+        "phpoffice/phpexcel": "1.8.*"
+	},
+    "autoload": {
+        "classmap": [
+            "app/controller",
+            "app/model"
+        ]
+    }
+}
