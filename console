@@ -7,4 +7,6 @@ require __DIR__ . "/bootstrap/autoload.php";
 require __DIR__ . "/bootstrap/global.php";
 
 $console = new Comnect\Console\Console($app);
+// add user command
+$console->addCommand(new \App\Command\GeneratorCommand($app));
 $console->boot();

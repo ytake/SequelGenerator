@@ -18,6 +18,7 @@
     "autoload": {
         "classmap": [
             "app/controller",
+	        "app/command",
             "app/model"
         ]
     }

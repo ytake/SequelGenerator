@@ -1,7 +1,9 @@
 <?php
 namespace Controller;
-
 use Comnect\Support\Config;
+use Model\Template\ReadInterface;
+use Model\Template\Writer\Database\Mysql;
+use Model\Template\Writer\Framework\Bear\Saturday;
 
 /**
  * Reader.php
@@ -10,19 +12,25 @@ use Comnect\Support\Config;
  */
 class Reader extends \Comnect\Console\Controller
 {
-	/** @var \Model\Template\Reader */
+	/** @var \Model\Template\Excel\Reader */
 	protected $reader;
 	/** @var \Comnect\Support\Config */
 	protected $config;
+	/** @var \Model\Template\Writer\Framework\Bear\Saturday  */
+	protected $writer;
+	/** @var \Model\Template\Writer\Database\Mysql\Scheme  */
+	protected $database;
 
 	/**
-	 * @param \Model\Template\Reader $reader
+	 * @param ReadInterface $reader
 	 * @param Config $config
 	 */
-	public function __construct(\Model\Template\Reader $reader, Config $config)
+	public function __construct(ReadInterface $reader, Config $config, Saturday $writer, Mysql\Scheme $database)
 	{
 		$this->reader = $reader;
 		$this->config = $config;
+		$this->writer = $writer;
+		$this->database = $database;
 	}
 
 	/**
@@ -34,6 +42,8 @@ class Reader extends \Comnect\Console\Controller
 		$configure = $this->config->get('config');
 		$file = $configure['file_path'] . "/app/storage/template/template.xls";
 
-		$this->reader->read($file);
+		$parseData = $this->reader->read($file);
+		$this->writer->write($parseData);
+		$this->database->scheme($parseData);
 	}
 }
