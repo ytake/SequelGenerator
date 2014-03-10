@@ -39,7 +39,7 @@ class Reader implements ReadInterface
 		"NULL" => "null",
 		"auto increment" => "auto_increment",
 		"description" => "description",
-		"fk" => "fk"
+		"foreign key" => "foreign_key"
 	);
 
 	/** @var array  */

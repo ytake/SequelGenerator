@@ -41,7 +41,7 @@ class Reader extends \Comnect\Console\Controller
 	{
 		$configure = $this->config->get('config');
 		$file = $configure['file_path'] . "/app/storage/template/template.xls";
-
+		$output = $configure['file_path'] . "/app/storage/output";
 		$parseData = $this->reader->read($file);
 		$this->writer->write($parseData);
 		$this->database->scheme($parseData);

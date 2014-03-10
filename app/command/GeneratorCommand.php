@@ -18,8 +18,6 @@ class GeneratorCommand extends Command
 	const COMMAND_NAME = "generate:template";
 	/** @var \Comnect\Console\Controller */
 	protected $app;
-	/** @var \Comnect\Console\Perform */
-	protected $perform;
 
 	/**
 	 * @param Controller $app

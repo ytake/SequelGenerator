@@ -19,7 +19,7 @@ class Database {
 	public function getTemplate()
 	{
 		return "CREATE TABLE IF NOT EXISTS {dbname}(\n"
-				."\t{elements}"
+				."{elements}"
 			." ) DEFAULT CHARACTER SET {charset} COLLATE {collate} ENGINE={engine};\n";
 	}
 }
