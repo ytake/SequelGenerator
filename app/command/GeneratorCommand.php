@@ -36,12 +36,7 @@ class GeneratorCommand extends Command
 	{
 		$this->setName(self::COMMAND_NAME)
 			->setDescription('read file, and template generate')
-			->addOption(
-				'path', null,
-				InputOption::VALUE_OPTIONAL,
-				'if set, switch read directory'
-			);
-
+			->addOption('path', null, InputOption::VALUE_OPTIONAL, 'if set, switch read directory');
 	}
 
 	/**

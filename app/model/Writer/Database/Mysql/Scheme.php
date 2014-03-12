@@ -5,14 +5,16 @@
  * 2014/03/07 17:58
  */
 namespace Model\Writer\Database\Mysql;
+use Model\SchemeInterface;
 use Model\Writer\Database\Mysql\Templates\Database;
 /**
  * Class Mysql
  * @package Model\Template\Writer\Database
  * @author  yuuki.takezawa<yuuki.takezawa@excite.jp>
  */
-class Scheme
-{//MyISAM
+class Scheme implements SchemeInterface
+{
+	//MyISAM
 	const DEFAULT_CHARSET = "utf8";
 
 	const DEFAULT_COLLATE = "utf8_general_ci";

@@ -2,6 +2,7 @@
 namespace Controller;
 use Comnect\Support\Config;
 use Model\ReadInterface;
+use Model\SchemeInterface;
 use Model\Writer\Database\Mysql;
 use Model\Writer\Framework\Bear\Saturday;
 
@@ -25,7 +26,7 @@ class Reader extends \Comnect\Console\Controller
 	 * @param ReadInterface $reader
 	 * @param Config $config
 	 */
-	public function __construct(ReadInterface $reader, Config $config, Saturday $writer, Mysql\Scheme $database)
+	public function __construct(ReadInterface $reader, Config $config, Saturday $writer, SchemeInterface $database)
 	{
 		$this->reader = $reader;
 		$this->config = $config;
@@ -45,9 +46,5 @@ class Reader extends \Comnect\Console\Controller
 		$parseData = $this->reader->read($file);
 		$this->writer->write($parseData);
 		$scheme = $this->database->scheme($parseData);
-
-		$fp = fopen("$output/scheme.sql", "w");
-		fwrite($fp, implode("\n", $scheme));
-		fclose($fp);
 	}
 }
