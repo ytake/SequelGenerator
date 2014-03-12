@@ -1,9 +1,9 @@
 <?php
-namespace Model\Template\Writer\Framework\Bear\Saturday\Elements;
+namespace Model\Writer\Framework\Bear\Saturday\Templates;
 
 /**
  * Class Form
- * @package Model\Template\Writer\Framework\Bear\Saturday\Elements
+ * @package Model\Writer\Framework\Bear\Saturday\Templates
  * @author  yuuki.takezawa<yuuki.takezawa@excite.jp>
  */
 class Form {

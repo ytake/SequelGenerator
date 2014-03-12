@@ -4,10 +4,10 @@
  * @author yuuki.takezawa<yuuki.takezawa@excite.jp>
  * 2014/03/07 18:11
  */
-namespace Model\Template\Writer\Database\Mysql\Stub;
+namespace Model\Writer\Database\Mysql\Templates;
 /**
  * Class Database
- * @package Model\Template\Writer\Database\Mysql\Stub
+ * @package Model\Template\Writer\Database\Mysql\Templates
  * @author  yuuki.takezawa<yuuki.takezawa@excite.jp>
  */
 class Database {
@@ -18,7 +18,7 @@ class Database {
 	 */
 	public function getTemplate()
 	{
-		return "CREATE TABLE IF NOT EXISTS {dbname}(\n"
+		return "CREATE TABLE IF NOT EXISTS {table_name}(\n"
 				."{elements}"
 			." ) DEFAULT CHARACTER SET {charset} COLLATE {collate} ENGINE={engine};\n";
 	}

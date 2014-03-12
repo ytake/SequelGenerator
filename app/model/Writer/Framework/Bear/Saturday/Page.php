@@ -4,17 +4,17 @@
  * @author yuuki.takezawa<yuuki.takezawa@excite.jp>
  * 2014/03/10 15:56
  */
-namespace Model\Template\Writer\Framework\Bear\Saturday;
-use Model\Template\Writer\Framework\Bear\Saturday\Elements\Page as Template;
+namespace Model\Writer\Framework\Bear\Saturday;
+use Model\Writer\Framework\Bear\Saturday\Templates\Page as Template;
 
 /**
  * Class Page
- * @package Model\Template\Writer\Framework\Bear\Saturday
+ * @package Model\Writer\Framework\Bear\Saturday
  * @author  yuuki.takezawa<yuuki.takezawa@excite.jp>
  */
 class Page {
 
-	/** @var \Model\Template\Writer\Framework\Bear\Saturday\Elements\Page */
+	/** @var \Model\Writer\Framework\Bear\Saturday\Templates\Page */
 	protected $template;
 
 	/**

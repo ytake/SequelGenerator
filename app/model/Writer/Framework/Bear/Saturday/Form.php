@@ -4,12 +4,12 @@
  * @author yuuki.takezawa<yuuki.takezawa@excite.jp>
  * 2014/03/10 15:56
  */
-namespace Model\Template\Writer\Framework\Bear\Saturday;
-use Model\Template\Writer\Framework\Bear\Saturday\Elements\Form as Template;
+namespace Model\Writer\Framework\Bear\Saturday;
+use Model\Writer\Framework\Bear\Saturday\Templates\Form as Template;
 
 /**
  * Class Smarty
- * @package Model\Template\Writer\Framework\Bear\Saturday\Elements
+ * @package Model\Writer\Framework\Bear\Saturday\Templates
  * @author  yuuki.takezawa<yuuki.takezawa@excite.jp>
  */
 class Form {
@@ -17,7 +17,7 @@ class Form {
 	// Soft delete field name
 	const SOFT_DELETE = "is_enabled";
 
-	/** @var \Model\Template\Writer\Framework\Bear\Saturday\Elements\Form */
+	/** @var \Model\Writer\Framework\Bear\Saturday\Templates\Form */
 	protected $template;
 
 	/**

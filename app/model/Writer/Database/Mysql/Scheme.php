@@ -4,8 +4,8 @@
  * @author yuuki.takezawa<yuuki.takezawa@excite.jp>
  * 2014/03/07 17:58
  */
-namespace Model\Template\Writer\Database\Mysql;
-use Model\Template\Writer\Database\Mysql\Stub\Database;
+namespace Model\Writer\Database\Mysql;
+use Model\Writer\Database\Mysql\Templates\Database;
 /**
  * Class Mysql
  * @package Model\Template\Writer\Database
@@ -36,10 +36,13 @@ class Scheme
 	 */
 	public function scheme(array $array)
 	{
-		$createTable = null;
-		$dbTemplate = $this->template->getTemplate();
+		$return = array();
+		echo "#parse start.\n";
+
 		foreach($array as $row)
 		{
+			$createTable = null;
+			$dbTemplate = $this->template->getTemplate();
 			if(count($row['database']))
 			{
 				$row['database']['charset']	= (isset($row['database']['charset'])) ? $row['database']['charset'] : self::DEFAULT_CHARSET;
@@ -53,18 +56,20 @@ class Scheme
 						$dbTemplate = str_replace($matches[0][0], $database, $dbTemplate);
 					}
 				}
-				echo "#parse {$database['database']['dbname']}\n";
+
 				if(count($row['elements']))
 				{
 					$elements = $this->createElement($row['elements'], $row['indexes'], $row['database']['engine'], $row['database']['table_name']);
-					$dbTemplate = str_replace("{elements}", $elements, $dbTemplate);
+					$createTable = str_replace("{elements}", $elements, $dbTemplate);
 				}else{
-					$dbTemplate = str_replace("{elements}", "", $dbTemplate);
+					$createTable = str_replace("{elements}", "", $dbTemplate);
 				}
 				echo "#create {$row['database']['table_name']}\n";
+				$return[] = $createTable;
 			}
 		}
-		return $dbTemplate;
+		echo "#parse end.\n";
+		return $return;
 	}
 
 	/**
@@ -118,9 +123,9 @@ class Scheme
 				{
 					if($row['index_type'] == "FULLTEXT INDEX" && $engine == "MyISAM")
 					{
-						$index[] = "{$row['index_type']} {$row['index_name']} ON $tableName ("	. implode(',', $row['filed_names']) .")";
+						$index[] = "{$row['index_type']} {$row['index_name']} (" . implode(',', $row['filed_names']) .")";
 					}else{
-						$index[] = "{$row['index_type']} {$row['index_name']} ON $tableName ("	. implode(',', $row['filed_names']) .")";
+						$index[] = "{$row['index_type']} {$row['index_name']} (" . implode(',', $row['filed_names']) .")";
 					}
 				}
 			}

@@ -1,9 +1,9 @@
 <?php
 namespace Controller;
 use Comnect\Support\Config;
-use Model\Template\ReadInterface;
-use Model\Template\Writer\Database\Mysql;
-use Model\Template\Writer\Framework\Bear\Saturday;
+use Model\ReadInterface;
+use Model\Writer\Database\Mysql;
+use Model\Writer\Framework\Bear\Saturday;
 
 /**
  * Reader.php
@@ -12,13 +12,13 @@ use Model\Template\Writer\Framework\Bear\Saturday;
  */
 class Reader extends \Comnect\Console\Controller
 {
-	/** @var \Model\Template\Excel\Reader */
+	/** @var \Model\Excel\Reader */
 	protected $reader;
 	/** @var \Comnect\Support\Config */
 	protected $config;
-	/** @var \Model\Template\Writer\Framework\Bear\Saturday  */
+	/** @var \Model\Writer\Framework\Bear\Saturday  */
 	protected $writer;
-	/** @var \Model\Template\Writer\Database\Mysql\Scheme  */
+	/** @var \Model\Writer\Database\Mysql\Scheme  */
 	protected $database;
 
 	/**
@@ -44,6 +44,10 @@ class Reader extends \Comnect\Console\Controller
 		$output = $configure['file_path'] . "/app/storage/output";
 		$parseData = $this->reader->read($file);
 		$this->writer->write($parseData);
-		$this->database->scheme($parseData);
+		$scheme = $this->database->scheme($parseData);
+
+		$fp = fopen("$output/scheme.sql", "w");
+		fwrite($fp, implode("\n", $scheme));
+		fclose($fp);
 	}
 }

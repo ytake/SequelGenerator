@@ -4,7 +4,7 @@
  * @author yuuki.takezawa<yuuki.takezawa@excite.jp>
  * 2014/03/07 17:52
  */
-namespace Model\Template;
+namespace Model;
 /**
  * Interface WriterInterface
  * @package Model\Template

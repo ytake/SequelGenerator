@@ -35,12 +35,11 @@ class GeneratorCommand extends Command
 	protected function configure()
 	{
 		$this->setName(self::COMMAND_NAME)
-			->setDescription('specify the namespace(controller)')
-			->addArgument('controller', InputArgument::REQUIRED, 'specify the namespace(controller)')
+			->setDescription('read file, and template generate')
 			->addOption(
-				'vars', null,
-				InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
-				'if set, perform set variables'
+				'path', null,
+				InputOption::VALUE_OPTIONAL,
+				'if set, switch read directory'
 			);
 
 	}
@@ -53,11 +52,6 @@ class GeneratorCommand extends Command
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
 		$array = array();
-		$controller = ucwords($input->getArgument('controller'));
-		if ($input->getOption('vars'))
-		{
-			$array = $input->getOption('vars');
-		}
 		/**
 		 */
 		set_error_handler(function ($errno, $errstr, $errfile, $errline)
@@ -70,8 +64,7 @@ class GeneratorCommand extends Command
 		// perform process
 		try {
 			// path to perform
-			$this->app->make($controller)->perform($array);
-			$output->writeln("perform controller:$controller");
+			$this->app->make("Controller\Reader")->perform($array);
 		}catch(\Exception $e){
 			throw new \Exception($e->getMessage(), 500);
 		// reflectionException

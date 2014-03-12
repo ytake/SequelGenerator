@@ -1,11 +1,11 @@
 <?php
-namespace Model\Template\Excel;
+namespace Model\Excel;
 /**
  * Reader.php
  * @author yuuki.takezawa<yuuki.takezawa@excite.jp>
  * 2014/03/04 16:10
  */
-use Model\Template\ReadInterface;
+use Model\ReadInterface;
 error_reporting(E_ALL);
 date_default_timezone_set('Asia/Tokyo');
 /**

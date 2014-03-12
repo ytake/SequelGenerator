@@ -4,8 +4,8 @@
  * @author yuuki.takezawa<yuuki.takezawa@excite.jp>
  * 2014/03/10 15:56
  */
-namespace Model\Template\Writer\Framework\Bear\Saturday;
-use Model\Template\Writer\Framework\Bear\Saturday\Elements\Smarty as Template;
+namespace Model\Writer\Framework\Bear\Saturday;
+use Model\Writer\Framework\Bear\Saturday\Templates\Smarty as Template;
 
 /**
  * Class Smarty
