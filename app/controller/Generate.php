@@ -1,13 +1,53 @@
 <?php
-/**
- * Generate.php
- * @author yuuki.takezawa<yuuki.takezawa@excite.jp>
- * 2014/03/12 19:34
- */
-
 namespace Controller;
+use Comnect\Support\Config;
+use Comnect\Console\Controller;
+use Model\ReadInterface;
+use Model\Database\SchemeInterface;
+use Model\Framework\WriterInterface;
 
+/**
+ * Class Generate
+ * @package Controller
+ * @author  yuuki.takezawa<yuuki.takezawa@excite.jp>s
+ */
+class Generate extends Controller {
 
-class Generate {
+	/** @var \Model\Excel\Reader */
+	protected $reader;
+	/** @var \Comnect\Support\Config */
+	protected $config;
+	/** @var \Model\Writer\Framework\Bear\Saturday  */
+	protected $writer;
+	/** @var \Model\Writer\Database\Mysql\Scheme  */
+	protected $database;
 
-} 
+	/**
+	 * @param ReadInterface $reader
+	 * @param Config $config
+	 */
+	public function __construct(ReadInterface $reader, Config $config, WriterInterface $writer, SchemeInterface $database)
+	{
+		$this->reader = $reader;
+		$this->config = $config;
+		$this->writer = $writer;
+		$this->database = $database;
+	}
+
+	/**
+	 * @param array $array
+	 * @return mixed|void
+	 */
+	public function perform(array $array)
+	{
+		$configure = $this->config->get('config');
+		$file = $configure['file_path'] . "/app/storage/template/template.xls";
+		$output = $configure['file_path'] . "/app/storage/output";
+		// scheme parse
+		$parseData = $this->reader->read($file);
+		// create database scheme
+		$this->database->prepare($parseData)->write($output);
+		// create framework template
+		$this->writer->prepare($parseData);
+	}
+}

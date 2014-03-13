@@ -58,8 +58,15 @@ class GeneratorCommand extends Command
 		});
 		// perform process
 		try {
-			// path to perform
-			$this->app->make("Controller\Reader")->perform($array);
+			// container
+			$this->app->bind("Model\ReadInterface", "Model\Excel\Reader");
+			//$this->app->bind("Model\Framework\WriterInterface", "Model\Writer\Framework\Bear\Saturday");
+
+			$this->app->bind("Model\Framework\WriterInterface", "Model\Writer\Framework\Laravel");
+			$this->app->bind("Model\Database\SchemeInterface", "Model\Writer\Database\Mysql\Scheme");
+
+			$this->app->make("Controller\Generate")->perform($array);
+
 		}catch(\Exception $e){
 			throw new \Exception($e->getMessage(), 500);
 		// reflectionException

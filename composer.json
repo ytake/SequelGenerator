@@ -19,7 +19,8 @@
         "classmap": [
             "app/controller",
 	        "app/command",
-            "app/model"
+            "app/model",
+            "app/exceptions"
         ]
     }
 }

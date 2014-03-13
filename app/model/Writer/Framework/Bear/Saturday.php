@@ -5,11 +5,14 @@
  * 2014/03/07 17:51
  */
 namespace Model\Writer\Framework\Bear;
-use Model\WriterInterface;
+use Exceptions\WriterErrorException;
+use Model\File;
+use Model\Framework\WriterInterface;
 use Model\Writer\Framework\Bear\Saturday\Form;
 use Model\Writer\Framework\Bear\Saturday\Page;
 use Model\Writer\Framework\Bear\Saturday\Smarty;
 use Model\Writer\Framework\Bear\Saturday\Resource;
+
 /**
  * Class Saturday
  * @package Model\Writer\Framework\Bear
@@ -25,6 +28,16 @@ class Saturday implements WriterInterface {
 	protected $page;
 	/** @var \Model\Writer\Framework\Bear\Saturday\Resource */
 	protected $resource;
+	/** @var \Model\File */
+	protected $file;
+
+	/** @var array  */
+	protected $scheme = array(
+		'view' => array(),
+		'form' => array(),
+		'page' => array(),
+		'resource' => array()
+	);
 
 	/**
 	 * @param Smarty $view
@@ -32,39 +45,66 @@ class Saturday implements WriterInterface {
 	 * @param Page $page
 	 * @param Resource $resource
 	 */
-	public function __construct(Smarty $view, Form $form, Page $page, Resource $resource)
+	public function __construct(Smarty $view, Form $form, Page $page, Resource $resource, File $file)
 	{
 		$this->view = $view;
 		$this->form = $form;
 		$this->page = $page;
 		$this->resource = $resource;
+		$this->file = $file;
+	}
+
+	/**
+	 * @param string $output
+	 * @return mixed|void
+	 */
+	public function write($output)
+	{
+		if(!count($this->scheme)){
+			throw new WriterErrorException('parse data not found', 500);
+		}
+		// extract
+		foreach($this->scheme as $arrayKey => $element)
+		{
+			if(!$this->file->isDirectory("$output/$arrayKey"))
+			{
+				if(!$this->file->makeDirectory("$output/$arrayKey"))
+				{
+					throw new WriterErrorException("cannot create directory \"$output/$arrayKey\": Permission denied", 500);
+				}
+			}
+			//
+			foreach($element as $key => $row)
+			{
+				if($arrayKey == "view")
+				{
+					$this->file->put("$output/$arrayKey/$key.tpl", $row);
+				}else{
+					$this->file->put("$output/$arrayKey/$key.php", $row);
+				}
+			}
+		}
 	}
 
 	/**
 	 * @param array $array
 	 * @return array|mixed
 	 */
-	public function write(array $array)
+	public function prepare(array $array)
 	{
-		$return = array(
-			'view' => array(),
-			'form' => array(),
-			'page' => array(),
-			'resource' => array()
-		);
 		foreach($array as $row)
 		{
 			if(count($row['database']))
 			{
 				if(count($row['elements']))
 				{
-					$return['view'][] = $this->view->create($row['elements']);
-					$return['form'][] = $this->form->create($row['elements']);
-					$return['page'][] = $this->page->create(array());
-					$return['resource'][] = $this->resource->create($row);
+					$this->scheme['view'][$row['database']['table_name']] = $this->view->create($row['elements']);
+					$this->scheme['form'][$row['database']['table_name']] = $this->form->create($row['elements']);
+					$this->scheme['page'][$row['database']['table_name']] = $this->page->create(array());
+					$this->scheme['resource'][$row['database']['table_name']] = $this->resource->create($row);
 				}
 			}
 		}
-		return $return;
+		return $this;
 	}
 }

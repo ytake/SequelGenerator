@@ -32,6 +32,6 @@ class Page {
 	public function create(array $array)
 	{
 		$views = null;
-		return str_replace("{elements}", $views, $this->template->getTemplate());
+		return str_replace("{elements}", $views, $this->template->get());
 	}
 }

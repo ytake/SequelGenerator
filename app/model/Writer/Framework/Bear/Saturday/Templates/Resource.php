@@ -18,25 +18,31 @@ class Resource{
 	 */
 	public function get()
 	{
-		$template = "<?php\n"
-			."class App_Ro_{class} extends App_Ro {\n\n"
-			."{table_name}"
-			."\tpublic function onInject(){\n\n"
-			."\t\tparent::onInject();\n"
-			."\t\t\$this->_query = BEAR::dependency('BEAR_Query', \$this->_queryConfig, false);\n"
-			."\t}\n\n"
-			."\tpublic function onRead(array \$values){\n\n"
-			."{read}\n"
-			."\t}\n\n"
-			."\tpublic function onCreate(array \$values){\n\n"
-			."{create}\n"
-			."\t}\n\n"
-			."\tpublic function onUpdate(array \$values){\n\n"
-			."{update}\n"
-			."\t}\n\n"
-			."\tpublic function onDelete(array \$values){\n\n"
-			."{delete}\n"
-			."\t}\n\n";
-		return $template;
+		return <<<EOD
+<?php
+class App_Ro_{class} extends App_Ro {
+
+{table_name}
+	public function onInject(){
+		parent::onInject();
+		\$this->_query = BEAR::dependency('BEAR_Query', \$this->_queryConfig, false);
+	}
+	public function onRead(array \$values){
+{read}
+	}
+
+	public function onCreate(array \$values){
+{create}
+	}
+
+	public function onUpdate(array \$values){
+{update}
+	}
+
+	public function onDelete(array \$values){
+{delete}
+	}
+}
+EOD;
 	}
 }

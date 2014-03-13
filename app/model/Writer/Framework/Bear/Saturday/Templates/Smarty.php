@@ -17,15 +17,17 @@ class Smarty {
 	 * form
 	 * @return string
 	 */
-	public function getTemplate()
+	public function get()
 	{
-		return "<form{\$form.attributes}>\n"
-				."\t{\$form.hidden}\n"
-					."{elements}"
-				."\t<div>\n"
-					."\t\t{\$form._freeze.html}\n"
-					."\t\t{\$form.qf_group_1._modify.html}&nbsp;&nbsp;{\$form.qf_group_1._action.html}\n"
-				."\t</div>\n"
-				."</form>";
+		return <<<EOD
+<form{\$form.attributes}>
+	{\$form.hidden}
+{elements}
+	<div>
+		{\$form._freeze.html}
+		{\$form.qf_group_1._modify.html}&nbsp;&nbsp;{\$form.qf_group_1._action.html}
+	</div>
+</form>
+EOD;
 	}
 }

@@ -66,6 +66,6 @@ class Form {
 				}
 			}
 		}
-		return str_replace("{elements}", $views, $this->template->getTemplate());
+		return str_replace("{elements}", $views, $this->template->get());
 	}
 }

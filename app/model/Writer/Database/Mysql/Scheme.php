@@ -1,11 +1,9 @@
 <?php
-/**
- * Mysql.php
- * @author yuuki.takezawa<yuuki.takezawa@excite.jp>
- * 2014/03/07 17:58
- */
 namespace Model\Writer\Database\Mysql;
-use Model\SchemeInterface;
+
+use Model\Database\SchemeInterface;
+use Model\File;
+use Exceptions\WriterErrorException;
 use Model\Writer\Database\Mysql\Templates\Database;
 /**
  * Class Mysql
@@ -16,15 +14,33 @@ class Scheme implements SchemeInterface
 {
 	//MyISAM
 	const DEFAULT_CHARSET = "utf8";
-
 	const DEFAULT_COLLATE = "utf8_general_ci";
+	/** @var array */
+	protected $scheme = array();
+	/** @var \Model\File */
+	protected $file;
 
 	/**
 	 * @param Database $template
+	 * @param File $file
 	 */
-	public function __construct(Database $template)
+	public function __construct(Database $template, File $file)
 	{
 		$this->template = $template;
+		$this->file = $file;
+	}
+
+	/**
+	 * @param string $output
+	 * @return mixed|void
+	 * @throws \Exceptions\WriterErrorException
+	 */
+	public function write($output)
+	{
+		if(!count($this->scheme)){
+			throw new WriterErrorException('scheme data not found', 500);
+		}
+		$this->file->put("$output/scheme.sql", implode("\n", $this->scheme));
 	}
 
 	/**
@@ -36,11 +52,9 @@ class Scheme implements SchemeInterface
 	 *  'indexes' => array()
 	 * );
 	 */
-	public function scheme(array $array)
+	public function prepare(array $array)
 	{
-		$return = array();
 		echo "#parse start.\n";
-
 		foreach($array as $row)
 		{
 			$createTable = null;
@@ -61,17 +75,17 @@ class Scheme implements SchemeInterface
 
 				if(count($row['elements']))
 				{
-					$elements = $this->createElement($row['elements'], $row['indexes'], $row['database']['engine'], $row['database']['table_name']);
+					$elements = $this->createElement($row['elements'], $row['indexes'], $row['database']['engine']);
 					$createTable = str_replace("{elements}", $elements, $dbTemplate);
 				}else{
 					$createTable = str_replace("{elements}", "", $dbTemplate);
 				}
 				echo "#create {$row['database']['table_name']}\n";
-				$return[] = $createTable;
+				$this->scheme[] = $createTable;
 			}
 		}
 		echo "#parse end.\n";
-		return $return;
+		return $this;
 	}
 
 	/**
@@ -80,7 +94,7 @@ class Scheme implements SchemeInterface
 	 * @param $engine
 	 * @return string
 	 */
-	protected function createElement(array $elements, array $indexes, $engine, $tableName)
+	protected function createElement(array $elements, array $indexes, $engine)
 	{
 		$array = array();
 		$primary = array();

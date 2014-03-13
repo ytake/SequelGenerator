@@ -14,7 +14,7 @@ use Model\Writer\Framework\Bear\Saturday\Templates\Smarty as Template;
  */
 class Smarty {
 
-	/** @var \Model\Template\Writer\Framework\Bear\Saturday\Elements\Smarty */
+	/** @var \Model\Writer\Framework\Bear\Saturday\Templates\Smarty  */
 	protected $template;
 
 	/**
@@ -47,6 +47,6 @@ class Smarty {
 				}
 			}
 		}
-		return str_replace("{elements}", $views, $this->template->getTemplate());
+		return str_replace("{elements}", $views, $this->template->get());
 	}
 }
