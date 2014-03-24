@@ -1,14 +1,15 @@
 <?php
 namespace Model\Writer\Framework\Laravel;
+use Model\Writer\CreateInterface;
 use Model\Writer\Framework\Laravel\Templates\Controller as Template;
 
 /**
  * Class Controller
  * @package Model\Writer\Framework\Laravel
- * @author  yuuki.takezawa<yuuki.takezawa@excite.jp>
+ * @author  yuuki.takezawa<yuuki.takezawa@comnect.jp.net>
  */
-class Controller {
-
+class Controller implements CreateInterface
+{
 	/** @var \Model\Writer\Framework\Laravel\Controller */
 	protected $template;
 
@@ -20,6 +21,10 @@ class Controller {
 		$this->template = $template;
 	}
 
+	/**
+	 * @param array $array
+	 * @return mixed|string|void
+	 */
 	public function create(array $array)
 	{
 		$template = $this->template->get();

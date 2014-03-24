@@ -2,7 +2,6 @@
 namespace App\Command;
 
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -16,12 +15,13 @@ use ErrorException;
 class GeneratorCommand extends Command
 {
 	const COMMAND_NAME = "generate:template";
+
+	const DEFAULT_FRAMEWORK = "laravel";
 	/** @var \Comnect\Console\Controller */
 	protected $app;
 
 	/**
 	 * @param Controller $app
-	 * @param Perform $perform
 	 */
 	public function __construct(Controller $app)
 	{
@@ -36,33 +36,43 @@ class GeneratorCommand extends Command
 	{
 		$this->setName(self::COMMAND_NAME)
 			->setDescription('read file, and template generate')
-			->addOption('path', null, InputOption::VALUE_OPTIONAL, 'if set, switch read directory');
+			->addOption('path', null, InputOption::VALUE_OPTIONAL, 'read directory')
+			->addOption('output', null, InputOption::VALUE_OPTIONAL, 'output directory')
+			->addOption('framework', null, InputOption::VALUE_OPTIONAL, 'framework');
 	}
 
 	/**
 	 * @param InputInterface $input
 	 * @param OutputInterface $output
 	 * @return int|null|void
+	 * @throws \Exception
 	 */
 	protected function execute(InputInterface $input, OutputInterface $output)
 	{
 		$array = array();
-		/**
-		 */
-		set_error_handler(function ($errno, $errstr, $errfile, $errline)
+		if($input->getOption('path'))
 		{
-			if ($errno == E_RECOVERABLE_ERROR)
+			$array['path'] = $input->getOption('path');
+		}
+		if($input->getOption('output'))
+		{
+			$array['output'] = $input->getOption('output');
+		}
+
+		$framework = ($input->getOption('framework')) ? $input->getOption('framework') : self::DEFAULT_FRAMEWORK;
+		//
+		set_error_handler(function ($errno, $errstr, $errfile, $errline)
 			{
-				throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
-			}
-		});
+				if ($errno == E_RECOVERABLE_ERROR)
+				{
+					throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
+				}
+			});
 		// perform process
 		try {
 			// container
 			$this->app->bind("Model\ReadInterface", "Model\Excel\Reader");
-			//$this->app->bind("Model\Framework\WriterInterface", "Model\Writer\Framework\Bear\Saturday");
-
-			$this->app->bind("Model\Framework\WriterInterface", "Model\Writer\Framework\Laravel");
+			$this->app->bind("Model\Framework\WriterInterface", "Model\Writer\Framework\\" . ucfirst($framework));
 			$this->app->bind("Model\Database\SchemeInterface", "Model\Writer\Database\Mysql\Scheme");
 
 			$this->app->make("Controller\Generate")->perform($array);
@@ -70,8 +80,6 @@ class GeneratorCommand extends Command
 		}catch(\Exception $e){
 			throw new \Exception($e->getMessage(), 500);
 		// reflectionException
-		}catch(\ReflectionException $e){
-			throw new \ReflectionException($e->getMessage(), 500);
 		}
 	}
 }

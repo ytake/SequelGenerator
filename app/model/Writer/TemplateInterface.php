@@ -3,7 +3,7 @@ namespace Model\Writer;
 /**
  * Interface ReadInterface
  * @package Model\Template
- * @author  yuuki.takezawa<yuuki.takezawa@excite.jp>
+ * @author  yuuki.takezawa<yuuki.takezawa@comnect.jp.net>
  */
 interface TemplateInterface {
 

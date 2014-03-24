@@ -2,7 +2,7 @@
 namespace Model\Excel;
 /**
  * Reader.php
- * @author yuuki.takezawa<yuuki.takezawa@excite.jp>
+ * @author yuuki.takezawa<yuuki.takezawa@comnect.jp.net>
  * 2014/03/04 16:10
  */
 use Model\ReadInterface;
@@ -11,7 +11,7 @@ date_default_timezone_set('Asia/Tokyo');
 /**
  * Class Reader
  * @package Model\Template
- * @author  yuuki.takezawa<yuuki.takezawa@excite.jp>
+ * @author  yuuki.takezawa<yuuki.takezawa@comnect.jp.net>
  */
 class Reader implements ReadInterface
 {

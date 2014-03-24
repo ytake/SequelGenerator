@@ -6,7 +6,7 @@ use Model\Writer\TemplateInterface;
  * @package Model\Writer\Framework\Laravel
  * @author  yuuki.takezawa<yuuki.takezawa@comnect.jp.net>
  */
-class View implements TemplateInterface {
+class Validator implements TemplateInterface {
 
 	/**
 	 * @return string|void
@@ -14,10 +14,10 @@ class View implements TemplateInterface {
 	public function get()
 	{
 		return <<<EOD
-{{--@extends('layout.default')--}}
-{{--@section('content')--}}
+<?php
+\$array = [
 {elements}
-{{--@stop--}}
+];
 EOD;
 	}
 }

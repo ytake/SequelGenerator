@@ -1,14 +1,14 @@
 <?php
 /**
  * Database.php
- * @author yuuki.takezawa<yuuki.takezawa@excite.jp>
+ * @author yuuki.takezawa<yuuki.takezawa@comnect.jp.net>
  * 2014/03/07 18:11
  */
 namespace Model\Writer\Database\Mysql\Templates;
 /**
  * Class Database
  * @package Model\Template\Writer\Database\Mysql\Templates
- * @author  yuuki.takezawa<yuuki.takezawa@excite.jp>
+ * @author  yuuki.takezawa<yuuki.takezawa@comnect.jp.net>
  */
 class Database {
 

@@ -4,7 +4,7 @@ use Model\Writer\TemplateInterface;
 /**
  * Class Model
  * @package Model\Writer\Framework\Laravel
- * @author  yuuki.takezawa<yuuki.takezawa@excite.jp>
+ * @author  yuuki.takezawa<yuuki.takezawa@comnect.jp.net>
  */
 class Model implements TemplateInterface {
 
@@ -26,12 +26,19 @@ class {class}
 		return \DB::connection()->table('{table_name}')->get();
 	}
 
+	/**
+	 * @param integer \$id
+	 */
 	public function get{method}(\$id)
 	{
 		return \DB::connection()->table('{table_name}')
 			->where('{primary}', \$id)->first();
 	}
 
+	/**
+	 * @param array \$array
+	 * @return \stdClass
+	 */
 	public function update{method}(array \$array, \$id)
 	{
 {update}
@@ -39,6 +46,10 @@ class {class}
 			->where('{primary}', \$id)->update(\$array);
 	}
 
+	/**
+	 * @param array \$array
+	 * @return \stdClass
+	 */
 	public function insert{method}(array \$array)
 	{
 {insert}

@@ -3,14 +3,14 @@ namespace Model\Writer\Framework;
 use Exceptions\WriterErrorException;
 use Model\File;
 use Model\Framework\WriterInterface;
-use Model\Writer\Framework\Laravel\Controller;
-use Model\Writer\Framework\Laravel\Model;
 use Model\Writer\Framework\Laravel\View;
-
+use Model\Writer\Framework\Laravel\Model;
+use Model\Writer\Framework\Laravel\Validator;
+use Model\Writer\Framework\Laravel\Controller;
 /**
  * Class Laravel
  * @package Model\Writer\Framework
- * @author  yuuki.takezawa<yuuki.takezawa@excite.jp>
+ * @author  yuuki.takezawa<yuuki.takezawa@comnect.jp.net>
  */
 class Laravel implements WriterInterface {
 
@@ -29,12 +29,27 @@ class Laravel implements WriterInterface {
 	protected $model;
 	/** @var \Model\Writer\Framework\Laravel\View */
 	protected $view;
+	/** @var \Model\Writer\Framework\Laravel\Validator */
+	protected $validator;
+	/** @var \Model\File */
+	protected $file;
 
-	public function __construct(Controller $controller, Model $model, View $view)
+	/**
+	 * @param Controller $controller
+	 * @param Model $model
+	 * @param View $view
+	 * @param Validator $validator
+	 * @param File $file
+	 */
+	public function __construct(
+		Controller $controller, Model $model, View $view, Validator $validator, File $file
+	)
 	{
 		$this->controller = $controller;
 		$this->model = $model;
 		$this->view = $view;
+		$this->validator = $validator;
+		$this->file = $file;
 	}
 
 	/**
@@ -56,16 +71,29 @@ class Laravel implements WriterInterface {
 					throw new WriterErrorException("cannot create directory \"$output/$arrayKey\": Permission denied", 500);
 				}
 			}
-			//
+
 			foreach($element as $key => $row)
 			{
 				if($arrayKey == "view")
 				{
-					$this->file->put("$output/$arrayKey/$key.tpl", $row);
+					foreach($row as $file => $data)
+					{
+						if(!$this->file->isDirectory("$output/$arrayKey/$key"))
+						{
+							if(!$this->file->makeDirectory("$output/$arrayKey/$key"))
+							{
+								throw new WriterErrorException("cannot create directory \"$output/$arrayKey\/$key\": Permission denied", 500);
+							}
+						}
+						$this->file->put("$output/$arrayKey/$key/$file.blade.php", $data);
+					}
+
 				}else{
-					$this->file->put("$output/$arrayKey/$key.php", $row);
+					$fileName = ucfirst("$key.php");
+					$this->file->put("$output/$arrayKey/$fileName", $row);
 				}
 			}
+
 		}
 	}
 
@@ -82,14 +110,13 @@ class Laravel implements WriterInterface {
 				if(count($row['elements']))
 				{
 					$this->scheme['view'][$row['database']['table_name']] = $this->view->create($row);
-					//$this->scheme['validator'][$row['database']['table_name']] = $this->validator->create($row['elements']);
+					$this->scheme['validator'][$row['database']['table_name']] = $this->validator->create($row['elements']);
 					$this->scheme['controller'][$row['database']['table_name']] = $this->controller->create($row);
 					$this->scheme['model'][$row['database']['table_name']] = $this->model->create($row);
 					//$this->scheme['migrate'][$row['database']['table_name']] = $this->migrate->create($row);
 				}
 			}
 		}
-
 		return $this;
 	}
 }

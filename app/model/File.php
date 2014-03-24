@@ -1,7 +1,7 @@
 <?php
 /**
  * File.php
- * @author yuuki.takezawa<yuuki.takezawa@excite.jp>
+ * @author yuuki.takezawa<yuuki.takezawa@comnect.jp.net>
  * 2014/03/13 9:51
  */
 namespace Model;

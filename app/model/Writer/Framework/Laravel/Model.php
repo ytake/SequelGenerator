@@ -1,14 +1,15 @@
 <?php
 namespace Model\Writer\Framework\Laravel;
+use Model\Writer\CreateInterface;
 use Model\Writer\Framework\Laravel\Templates\Model as Template;
 
 /**
  * Class Model
  * @package Model\Writer\Framework\Laravel
- * @author  yuuki.takezawa<yuuki.takezawa@excite.jp>
+ * @author  yuuki.takezawa<yuuki.takezawa@comnect.jp.net>
  */
-class Model {
-
+class Model implements CreateInterface
+{
 	/** @var \Model\Writer\Framework\Laravel\Templates\Model  */
 	protected $template;
 
@@ -57,6 +58,7 @@ class Model {
 				$template = str_replace("{class}", ucwords($class), $template);
 				$template = str_replace("{table_name}", $array['database']['table_name'], $template);
 			}
+
 			if(count($array['elements']))
 			{
 				foreach($array['elements'] as $element)

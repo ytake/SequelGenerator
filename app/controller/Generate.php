@@ -9,7 +9,7 @@ use Model\Framework\WriterInterface;
 /**
  * Class Generate
  * @package Controller
- * @author  yuuki.takezawa<yuuki.takezawa@excite.jp>s
+ * @author  yuuki.takezawa<yuuki.takezawa@comnect.jp.net>
  */
 class Generate extends Controller {
 
@@ -17,7 +17,7 @@ class Generate extends Controller {
 	protected $reader;
 	/** @var \Comnect\Support\Config */
 	protected $config;
-	/** @var \Model\Writer\Framework\Bear\Saturday  */
+	/** @var \Model\Framework\WriterInterface  */
 	protected $writer;
 	/** @var \Model\Writer\Database\Mysql\Scheme  */
 	protected $database;
@@ -48,6 +48,6 @@ class Generate extends Controller {
 		// create database scheme
 		$this->database->prepare($parseData)->write($output);
 		// create framework template
-		$this->writer->prepare($parseData);
+		$this->writer->prepare($parseData)->write($output);
 	}
 }

@@ -8,7 +8,7 @@ use Model\Writer\Database\Mysql\Templates\Database;
 /**
  * Class Mysql
  * @package Model\Template\Writer\Database
- * @author  yuuki.takezawa<yuuki.takezawa@excite.jp>
+ * @author  yuuki.takezawa<yuuki.takezawa@comnect.jp.net>
  */
 class Scheme implements SchemeInterface
 {
