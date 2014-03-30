@@ -87,6 +87,9 @@ class Laravel implements WriterInterface {
 						}
 						$this->file->put("$output/$arrayKey/$key/$file.blade.php", $data);
 					}
+				}elseif($arrayKey == "controller"){
+					$fileName = ucfirst("{$key}Controller.php");
+					$this->file->put("$output/$arrayKey/$fileName", $row);
 
 				}else{
 					$fileName = ucfirst("$key.php");
